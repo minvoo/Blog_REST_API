@@ -5,10 +5,13 @@ import com.minvoo.blog.dto.CommentDto;
 import java.util.List;
 
 public interface CommentService {
+    CommentDto createComment(long postId, CommentDto commentDto);
 
-    CommentDto createComment(Long postId, CommentDto commentDto);
+    List<CommentDto> getCommentsByPostId(long postId);
 
-    List<CommentDto> getAllCommentsByPostId(Long postId);
+    CommentDto getCommentById(Long postId, Long commentId);
 
-    CommentDto getCommentById(Long postId, Long id);
+    CommentDto updateComment(Long postId, long commentId, CommentDto commentRequest);
+
+    void deleteComment(Long postId, Long commentId);
 }

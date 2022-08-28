@@ -1,20 +1,15 @@
 package com.minvoo.blog.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.minvoo.blog.entity.Post;
+import lombok.*;
 import lombok.experimental.Accessors;
 
+import lombok.Data;
+
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Accessors(chain = true)
 public class CommentDto {
-
-
-    private Long id;
+    private long id;
     private String name;
     private String email;
     private String body;
-
 }

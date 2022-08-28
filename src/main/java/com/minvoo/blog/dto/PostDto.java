@@ -1,14 +1,16 @@
 package com.minvoo.blog.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.Accessors;
+
+import java.util.Set;
+
 
 @Data
-@AllArgsConstructor
 public class PostDto {
-
-    private Long id;
+    private long id;
     private String title;
     private String description;
     private String content;
+    private Set<CommentDto> comments;
 }
