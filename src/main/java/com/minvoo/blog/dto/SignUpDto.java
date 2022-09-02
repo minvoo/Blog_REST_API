@@ -1,6 +1,5 @@
 package com.minvoo.blog.dto;
 
-
 import lombok.Data;
 
 @Data

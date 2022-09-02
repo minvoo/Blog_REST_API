@@ -1,11 +1,11 @@
 package com.minvoo.blog.service.impl;
 
 import com.minvoo.blog.dto.PostDto;
-import com.minvoo.blog.entity.Post;
 import com.minvoo.blog.dto.PostResponse;
+import com.minvoo.blog.service.PostService;
+import com.minvoo.blog.entity.Post;
 import com.minvoo.blog.exception.ResourceNotFoundException;
 import com.minvoo.blog.repository.PostRepository;
-import com.minvoo.blog.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,8 +24,8 @@ public class PostServiceImpl implements PostService {
     private ModelMapper mapper;
 
     public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
-        this.postRepository = postRepository;
-        this.mapper = mapper;
+          this.postRepository = postRepository;
+          this.mapper = mapper;
     }
 
     @Override

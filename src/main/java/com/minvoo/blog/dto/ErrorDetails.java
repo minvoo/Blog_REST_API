@@ -1,14 +1,8 @@
 package com.minvoo.blog.dto;
 
-import lombok.Getter;
-import lombok.experimental.Accessors;
-
 import java.util.Date;
 
-@Getter
-@Accessors(chain = true)
 public class ErrorDetails {
-
     private Date timestamp;
     private String message;
     private String details;
@@ -19,5 +13,15 @@ public class ErrorDetails {
         this.details = details;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
 }

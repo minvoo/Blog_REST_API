@@ -1,19 +1,14 @@
 package com.minvoo.blog.service.impl;
 
 import com.minvoo.blog.dto.CommentDto;
-import com.minvoo.blog.dto.PostDto;
 import com.minvoo.blog.entity.Comment;
 import com.minvoo.blog.entity.Post;
-import com.minvoo.blog.exception.BlogAPIException;
-
 import com.minvoo.blog.exception.ResourceNotFoundException;
-
 import com.minvoo.blog.repository.CommentRepository;
 import com.minvoo.blog.repository.PostRepository;
 import com.minvoo.blog.service.CommentService;
-import com.minvoo.blog.service.PostService;
+import com.minvoo.blog.exception.BlogAPIException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

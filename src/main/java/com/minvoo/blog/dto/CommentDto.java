@@ -1,27 +1,35 @@
 package com.minvoo.blog.dto;
 
-import com.minvoo.blog.entity.Post;
-import lombok.*;
-import lombok.experimental.Accessors;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+@Api(value = "Comment model information")
 @Data
 public class CommentDto {
-    private long id;
 
-    @NotEmpty(message = "Name should not be empty")
+    @ApiModelProperty(value = "Comment id")
+    private long id;
+    // name should not be null or empty
+    @ApiModelProperty(value = "Comment name")
+    @NotEmpty(message = "Name should not be null or empty")
     private String name;
 
-    @NotEmpty(message = "Email should not be empty")
+    // email should not be null or empty
+    // email field validation
+    @ApiModelProperty(value = "Comment email")
+    @NotEmpty(message = "Email should not be null or empty")
     @Email
     private String email;
 
-    @NotEmpty(message = "Body should not be empty")
-    @Size(min=10, message = "Body should have at least 10 characters")
+    // comment body should not be bull or empty
+    // Comment body must be minimum 10 characters
+    @NotEmpty
+    @ApiModelProperty(value = "Comment body")
+    @Size(min = 10, message = "Comment body must be minimum 10 characters")
     private String body;
 }

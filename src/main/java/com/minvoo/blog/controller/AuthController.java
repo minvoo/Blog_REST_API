@@ -8,6 +8,9 @@ import com.minvoo.blog.entity.User;
 import com.minvoo.blog.repository.RoleRepository;
 import com.minvoo.blog.repository.UserRepository;
 import com.minvoo.blog.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,49 +25,55 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
+@Api(value = "Auth controller exposes siginin and signup REST APIs")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
-
+    @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
-    private JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-                          RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
+    @ApiOperation(value = "REST API to Register or Signup user to Blog app")
     @PostMapping("/signin")
-    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword()));
+    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDto.getUsernameOrEmail(), loginDto.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // jwt
-        String token = jwtTokenProvider.generateToken(authentication);
+        // get token form tokenProvider
+        String token = tokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
+    @ApiOperation(value = "REST API to Signin or Login user to Blog app")
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(SignUpDto signUpDto) {
-        if (userRepository.existsByUsername(signUpDto.getUsername())) {
-            return new ResponseEntity<>("Username already taken!", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
 
+        // add check for username exists in a DB
+        if(userRepository.existsByUsername(signUpDto.getUsername())){
+            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByEmail((signUpDto.getEmail()))) {
-            return new ResponseEntity<>("Email already taken!", HttpStatus.BAD_REQUEST);
+        // add check for email exists in DB
+        if(userRepository.existsByEmail(signUpDto.getEmail())){
+            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
+        // create user object
         User user = new User();
         user.setName(signUpDto.getName());
         user.setUsername(signUpDto.getUsername());
@@ -72,11 +81,11 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
         Role roles = roleRepository.findByName("ROLE_ADMIN").get();
-
         user.setRoles(Collections.singleton(roles));
 
         userRepository.save(user);
 
-        return new ResponseEntity<>("User registered sucessfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+
     }
 }

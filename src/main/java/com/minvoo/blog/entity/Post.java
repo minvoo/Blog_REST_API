@@ -1,12 +1,9 @@
 package com.minvoo.blog.entity;
 
-import com.minvoo.blog.dto.PostDto;
 import lombok.*;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
